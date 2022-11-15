@@ -1,4 +1,4 @@
-export default interface INewUser {
+export default interface IUser {
   username: string;
   password: string;
 }

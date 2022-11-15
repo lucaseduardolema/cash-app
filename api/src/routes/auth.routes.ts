@@ -9,4 +9,8 @@ authRouter
   .route("/signup")
   .post((req, res) => authController.signup(req, res));
 
+authRouter
+  .route("/signin")
+  .post((req, res) => authController.signin(req, res))
+
 export default authRouter;
