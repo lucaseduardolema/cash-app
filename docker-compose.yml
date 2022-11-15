@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+
+  # client:
+  #   build: ./client
+  #   container_name: ng_client
+  #   depends_on:
+  #     - api
+  #   healthcheck:
+  #     test: ["CMD", "lsof", "-t", "-i:3000"]
+  #     timeout: 10s
+  #     retries: 5
+  #     start_period: 5s
+  #   ports:
+  #     - "3000:3000"
+
+  api:
+    build: ./api
+    container_name: ng_api
+    depends_on:
+      - db
+    environment:
+      - PORT=3001
+      - DB_USER=root
+      - DB_PASS=123456
+      - DB_HOST=db
+      - DB_NAME=NG_DB
+      - DB_PORT=5432
+    ports:
+      - 3001:3001
+
+  db:
+    platform: linux/x86_64
+    image: postgres:13
+    container_name: ng_db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_USER=root
+    restart: 'always'
