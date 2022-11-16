@@ -1,4 +1,4 @@
-import { Model, INTEGER, DECIMAL, DATE } from 'sequelize';
+import { Model, INTEGER, DECIMAL, DATE, literal } from 'sequelize';
 import db from '.';
 
 class Transactions extends Model {
@@ -49,12 +49,16 @@ Transactions.init({
   },
   createdAt: {
     allowNull: false,
+    field: 'created_at',
     type: DATE,
+    defaultValue: literal('CURRENT_TIMESTAMP')
   },
   updatedAt: {
     allowNull: false,
+    field: 'updated_at',
     type: DATE,
-  },
+    defaultValue: literal('CURRENT_TIMESTAMP')
+  }
 }, {
   sequelize: db,
   modelName: 'transactions',

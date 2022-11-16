@@ -24,7 +24,7 @@ Account.init({
   timestamps: false,  
 });
 
-Account.hasMany(Transactions, { as: 'transactions' });
+// Account.hasMany(Transactions, { as: 'transactions' });
 Transactions.belongsTo(Account, {
   foreignKey: 'debitedAccountId',
   as: 'debitedAccount',
