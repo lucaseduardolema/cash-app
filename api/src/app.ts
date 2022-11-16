@@ -4,9 +4,11 @@ import handleError from "./middlewares/handleError";
 import authRouter from "./routes/auth.routes";
 import accountRouter from "./routes/account.routes";
 import transactionRouter from "./routes/transaction.routes";
+import cors from 'cors'
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 
 app.use("/auth", authRouter);

@@ -12,8 +12,7 @@ export default class AuthController {
   async signup(req: Request, res: Response) {
     const user = req.body as IUser;
 
-    const { error } = userSchema.validate(user);
-    if (error) throw new HttpError(400, error.message);
+    this.validateUser(user);
 
     const userExist = await this.userService.getUserByUsername(user.username);
     if (userExist) throw new HttpError(409, "Usuário já cadastrado");
@@ -26,11 +25,15 @@ export default class AuthController {
   async signin(req: Request, res: Response) {
     const user = req.body as IUser;
 
-    const { error } = userSchema.validate(user);
-    if (error) throw new HttpError(400, error.message);
+    this.validateUser(user);
 
     const token = await this.authService.signin(user);
 
     res.status(200).json({ token });
+  }
+
+  private validateUser(user: IUser) {
+    const { error } = userSchema.validate(user);
+    if (error) throw new HttpError(400, error.message);
   }
 }
