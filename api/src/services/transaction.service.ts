@@ -24,8 +24,9 @@ export default class TransactionService {
 
     try {
       const fromNewBalance =
-        fromAccount?.dataValues.balance - data.valueToDebit;
-      const toNewBalance = toAccount?.dataValues.balance + data.valueToDebit;
+        Number(fromAccount?.dataValues.balance) - Number(data.valueToDebit);
+      const toNewBalance =
+        Number(toAccount?.dataValues.balance) + Number(data.valueToDebit);
       await Account.update(
         { balance: fromNewBalance },
         { where: { id: fromAccount?.dataValues.id }, transaction: t }
@@ -35,8 +36,6 @@ export default class TransactionService {
         { balance: toNewBalance },
         { where: { id: toAccount?.dataValues.id }, transaction: t }
       );
-
-      // await db.query("INSERT INTO transactions")
 
       await Transactions.create(
         {
@@ -48,10 +47,10 @@ export default class TransactionService {
       );
 
       await t.commit();
-      return { message: "Transferencia realizada "}
+      return { message: "Transferencia realizada " };
     } catch (error: any) {
       await t.rollback();
-      throw new HttpError(404, error)
+      throw new HttpError(404, error);
     }
   }
 }
