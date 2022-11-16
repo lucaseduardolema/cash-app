@@ -4,6 +4,7 @@ import Account from "../database/models/Account.model";
 import HttpError from "../utils/httpError";
 import UserService from "./user.service";
 import Transactions from "../database/models/Transactions.model";
+import { Op } from "sequelize";
 
 export default class TransactionService {
   private userService = new UserService();
@@ -47,10 +48,22 @@ export default class TransactionService {
       );
 
       await t.commit();
-      return { message: "Transferencia realizada " };
+      return { message: "Transferencia realizada" };
     } catch (error: any) {
       await t.rollback();
       throw new HttpError(404, error);
     }
+  }
+
+  async getAllUserTransactions(accountId: number) {
+    const transactions = await Transactions.findAll({
+      where: {
+        [Op.or]: [
+          { debitedAccountId: accountId },
+          { creditedAccoundId: accountId },
+        ],
+      },
+    });
+    return transactions;
   }
 }

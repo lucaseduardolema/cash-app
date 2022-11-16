@@ -16,7 +16,7 @@ export default class TransactionController {
 
     const { error } = transactionSchema.validate(info);
     if (error) throw new HttpError(404, error.message);
-    
+
     const user: IUser = decodeToken(token);
     if (info.username === user.username) {
       throw new HttpError(404, "Não é possível transferir para sí mesmo");
@@ -32,5 +32,17 @@ export default class TransactionController {
     const message = await this.transactionService.transferByUsername(data);
 
     res.status(200).json(message);
+  }
+
+  async getAllUserTransactions(req: Request, res: Response) {
+    const token = req.get("authorization") as string;
+    if (!token) throw new HttpError(404, "Token nessário");
+    const user: IUser = decodeToken(token);
+
+    const transactions = await this.transactionService.getAllUserTransactions(
+      user.accountId as number
+    );
+
+    res.status(200).json(transactions);
   }
 }
