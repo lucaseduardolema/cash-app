@@ -1,18 +1,18 @@
 version: '3.9'
 services:
 
-  # client:
-  #   build: ./client
-  #   container_name: ng_client
-  #   depends_on:
-  #     - api
-  #   healthcheck:
-  #     test: ["CMD", "lsof", "-t", "-i:3000"]
-  #     timeout: 10s
-  #     retries: 5
-  #     start_period: 5s
-  #   ports:
-  #     - "3000:3000"
+  client:
+    build: ./client
+    container_name: ng_client
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3000"]
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    ports:
+      - "3000:3000"
 
   api:
     build: ./api
