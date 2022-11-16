@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import jwt, { Jwt } from 'jsonwebtoken';
+import IUser from '../interfaces/newUser.interface';
+import HttpError from './httpError';
 
 dotenv.config();
 
@@ -19,7 +21,7 @@ interface IJtw extends Jwt {
 export const decodeToken = (token: string) => {
   const data = jwt.decode(token, { complete: true }) as IJtw;
   
-  // if (!data) throw new HttpError(401, 'Invalid token');
+  if (!data) throw new HttpError(401, 'Invalid token');
   
-  // return data.payload as IUser;
+  return data.payload as IUser;
 };
