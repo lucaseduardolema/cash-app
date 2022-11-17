@@ -29,6 +29,12 @@ services:
     ports:
       - 3001:3001
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
   db:
     platform: linux/x86_64
     image: postgres:13
