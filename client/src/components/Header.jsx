@@ -1,18 +1,29 @@
 import React from "react";
-import { Container, Navbar } from "react-bootstrap";
+import { Button, Container, Navbar } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import logo from "../images/bank-icon.png";
 
-export default function Header({userBalance}) {
+export default function Header({ userBalance }) {
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("access_token");
+    navigate("/");
+  };
+
   return (
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand>
-            <div className="d-flex justify-content-center align-items-center">
-              <img src={logo} alt="ng cash" width="40" heigth="40" />
-              <div> Seu saldo é de: {userBalance}</div>
-            </div>
+            <img src={logo} alt="ng cash" width="40" heigth="40" />
+            NG.CASH
           </Navbar.Brand>
+
+          <Navbar.Text>Seu saldo é de: {userBalance}</Navbar.Text>
+
+          <Button variant="danger" type="button" onClick={logout}>
+            Logout
+          </Button>
         </Container>
       </Navbar>
     </>
