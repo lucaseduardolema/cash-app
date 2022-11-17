@@ -16,7 +16,7 @@ export default function Login() {
       const endpoint = `/auth/${name}`;
       const { token } = await requestAuth(endpoint, { username, password });
 
-      localStorage.setItem("user_token", JSON.stringify(token));
+      localStorage.setItem("access_token", JSON.stringify(token));
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
