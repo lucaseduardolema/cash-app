@@ -20,7 +20,7 @@ export default function Login() {
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
-      alert(error.response.data.message)
+      alert(error.response?.data.message || error.message);
     }
   };
 
@@ -59,7 +59,10 @@ export default function Login() {
               Insira seu Password para logar
             </Form.Text>
           </Form.Group>
-          <div>
+
+          <p>Faça Login ou clique em Signup para cadastrar</p>
+
+          <div className="d-flex justify-content-around">
             <Button
               variant="primary"
               name="signin"

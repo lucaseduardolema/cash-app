@@ -1,28 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Container, Navbar } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import logo from "../images/bank-icon.png";
-import { getBalance, setToken } from "../services/requests";
 
-export default function Header() {
-  const navigate = useNavigate()
-  const [userBalance, setUserBalance] = useState(0);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const token = JSON.parse(localStorage.getItem("access_token"));
-        setToken(token);
-        const { balance } = await getBalance("/account");
-        setUserBalance(balance);
-      } catch (error) {
-        console.log(error);
-        alert(error.response.data.message);
-        navigate('/')
-      }
-    })();
-  });
-
+export default function Header({userBalance}) {
   return (
     <>
       <Navbar bg="dark" variant="dark">
