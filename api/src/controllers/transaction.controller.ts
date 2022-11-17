@@ -25,7 +25,7 @@ export default class TransactionController {
     const data: ITransfer = {
       fromUsername: user.username,
       fromAccountId: user.accountId as number,
-      valueToDebit: info.value,
+      valueToDebit: Number(info.value),
       toUsername: info.username,
     };
 
