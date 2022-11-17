@@ -20,6 +20,7 @@ export default function Login() {
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
+      alert(error.response.data.message)
     }
   };
 

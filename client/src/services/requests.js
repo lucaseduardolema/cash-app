@@ -17,3 +17,8 @@ export const getBalance = async (endpoint) => {
   const { data } = await api.get(endpoint)
   return data
 }
+
+export const transfer = async (endpoint, body) => {
+  const { data } = await api.post(endpoint, body);
+  return data;
+}
