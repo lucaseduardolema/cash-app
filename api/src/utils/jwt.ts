@@ -21,7 +21,7 @@ interface IJtw extends Jwt {
 export const decodeToken = (token: string) => {
   const data = jwt.decode(token, { complete: true }) as IJtw;
   
-  if (!data) throw new HttpError(401, 'Invalid token');
+  if (!data) throw new HttpError(401, 'Token Inválido');
   
   return data.payload as IUser;
 };

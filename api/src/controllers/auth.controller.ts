@@ -15,7 +15,7 @@ export default class AuthController {
     this.validateUser(user);
 
     const userExist = await this.userService.getUserByUsername(user.username);
-    if (userExist) throw new HttpError(409, "Usuário já cadastrado");
+    if (userExist) throw new HttpError(400, "Usuário já cadastrado");
 
     const token = await this.authService.signup(user);
 

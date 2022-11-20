@@ -1,0 +1,287 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de transferências monetárias entre usuários",
+    "description": "Esta API cadastra usuários e realiza transferências entre eles de forma segura",
+    "termsOfService": "http://localhost:3000",
+    "contact": {
+      "email": "lucaseduardolema@gmail.com"
+    },
+    "version": "1.0.0" 
+  },
+  "servers" : [
+    {
+      "url": "http://localhost:3001",
+      "description": "API de produção"
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "sumary": "Cadastro de usuários",
+        "description": "Esta roda inclui um novo usuário no sistema",
+        "tags": ["Signup/Signin"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/componentes/schemas/Auth"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "username": "Pessoa usuária 1",
+                    "password": "senha123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Usuário já cadastrado"
+          },          
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/componentes/schemas/Token"
+                }
+              },
+              "examples": {
+                "token": {
+                  "value": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJlZHVhcmRvIiwiYWNjb3VudElkIjoxLCJpYXQiOjE2Njg5NTUwMzcsImV4cCI6MTY2OTA0MTQzN30.6_bIMgeiDOdcvttgxAqDKmZoCkqfRvZ3lnDsToLi250"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post":{
+        "sumary": "Login de pessoa usuária",
+        "description": "Esta roda da acesso ao sistema da pessoa usuária com credencias válidas",
+        "tags":["Signup/Signin"],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/componentes/schemas/Auth" 
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "username": "Pessoa usuária 1",
+                    "password": "senha123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "400":{
+            "description": "Password ou Username incorreto"
+          },          
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/componentes/schemas/Token"
+                }
+              },
+              "examples": {
+                "token": {
+                  "value": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJlZHVhcmRvIiwiYWNjb3VudElkIjoxLCJpYXQiOjE2Njg5NTUwMzcsImV4cCI6MTY2OTA0MTQzN30.6_bIMgeiDOdcvttgxAqDKmZoCkqfRvZ3lnDsToLi250"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account": {
+      "get":{
+        "sumary": "Busca o saldo em conta da pessoa usuária",
+        "description": "Esta rota busca o saldo da pessoa logado por meio do seu token de acesso",
+        "tags":["Account"],
+        "responses":{
+          "404": {
+            "description": "Token nessário"
+          },
+          "401": {
+            "description": "Token Inválido"
+          },
+          "200":{
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/componentes/schemas/Account"
+                }
+              },
+              "examples":{
+                "balance":{
+                  "value":{
+                    "id": 1,
+                    "balance": "100"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/transaction": {
+      "get": {
+        "sumary": "Busca as transações que a pessoa usuária participou",
+        "description": "Esta rota retorna uma lista de todas as transações que a pessoa participou, seja realizando ou recebendo uma transferência",
+        "tags":["Transactions"],
+        "security":[{ "bearerAuth": [] }],
+        "responses":{
+          "404": {
+            "description": "Token nessário"
+          },
+          "401": {
+            "description": "Token Inválido"
+          },
+          "200": {
+            "description": "OK",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/componentes/schemas/Extract"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post":{
+        "sumary": "Realiza uma transferência",
+        "description": "Esta rota realiza uma transferência de valores da conta da pessoa logada para outro usuário do sistema",
+        "tags":["Transactions"],
+        "security":[{"bearerAuth":[]}],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/componentes/schemas/Transaction"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "username": "Pessoa usuária 2",
+                    "value": 50
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "404":{
+            "description": "Não é possível transferir para sí mesmo"
+          },
+          "403":{
+            "description": "Saldo insuficiente"
+          },
+          "200": {
+            "description": "Transferencia realizada"
+          }
+        }
+      }
+    }
+  },
+  "componentes": {
+    "schemas": {
+      "Auth": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 3
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8
+          }
+        }
+      },
+      "Token": {
+        "type":"object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "Account": {
+        "type":"object",
+        "properties":{
+          "id": {
+            "type": "number"
+          },
+          "balance": {
+            "type":"string"
+          }
+        }
+      },
+      "Extract":{
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"number"
+          },
+          "debitedAccountId": {
+            "type":"number"
+          },
+          "creditedAccountId": {
+            "type":"number"
+          },
+          "value":{
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Transaction":{
+        "type":"object",
+        "properties":{
+          "username": {
+            "type":"string",
+            "example": "Pessoa usuária 2",
+            "minLength": 3
+          },
+          "value":{
+            "type":"number"
+          }
+        }
+      }
+    },
+    "securitySchemes":{
+      "bearerAuth":{
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
