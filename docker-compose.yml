@@ -3,7 +3,7 @@ services:
 
   client:
     build: ./client
-    container_name: ng_client
+    container_name: cash_client
     depends_on:
       - api
     healthcheck:
@@ -16,7 +16,7 @@ services:
 
   api:
     build: ./api
-    container_name: ng_api
+    container_name: cash_api
     depends_on:
       - db
     environment:
@@ -24,7 +24,7 @@ services:
       - DB_USER=root
       - DB_PASS=123456
       - DB_HOST=db
-      - DB_NAME=NG_DB
+      - DB_NAME=CASH_DB
       - DB_PORT=5432
     ports:
       - 3001:3001
@@ -38,7 +38,7 @@ services:
   db:
     platform: linux/x86_64
     image: postgres:13
-    container_name: ng_db
+    container_name: cash_db
     ports:
       - 5432:5432
     environment:

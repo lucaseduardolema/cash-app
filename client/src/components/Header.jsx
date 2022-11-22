@@ -16,7 +16,7 @@ export default function Header({ userBalance }) {
         <Container>
           <Navbar.Brand>
             <img src={logo} alt="ng cash" width="40" heigth="40" />
-            NG.CASH
+            CASH APP
           </Navbar.Brand>
 
           <Navbar.Text>Seu saldo é de: {userBalance}</Navbar.Text>

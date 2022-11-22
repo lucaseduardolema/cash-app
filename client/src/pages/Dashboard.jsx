@@ -69,7 +69,7 @@ export default function DashBoard() {
     <>
       <Header userBalance={userBalance} />
       <Container>
-        <h1>NG Cash</h1>
+        <h1>Cash App</h1>
 
         <div>
           <h2>Faça uma transferência</h2>
